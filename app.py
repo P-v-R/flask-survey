@@ -13,7 +13,7 @@ RESPONSES = []
 @app.route('/')
 def show_title_page():
     ''' render a page that shows the user the title of the survey, 
-       the instructions, and a button to start the survey. '''
+    the instructions, and a button to start the survey. '''
 
     
     title = survey.title
@@ -24,9 +24,20 @@ def show_title_page():
     survey_title = title, 
     survey_instructions = instructions )
 
+@app.route('/begin', methods=["POST"])
+def begin():
+    """ When start button clicked, directs used to first question in survey """
+    session['question-number'] = 0
+    
+    return redirect('/questions/0')
+    
+@app.route('/questions/<int:qnum>')
+def generate_question(qnum):
+    ''' generate current question and render a page with response options '''
+
+    return render_template('question.html', question=survey.questions[qnum])
+# @app.route('/question/<index>')
 
 
-# surveys = {
-#     "satisfaction": satisfaction_survey,
-#     "personality": personality_quiz,
-# }
+
+
